@@ -16,6 +16,9 @@ public class Product {
 	private String id;
 	private String name;
 	private String description;
+	
+	private int price;
+	
 	private String categoryId;
 	private String supplierId;
 	
@@ -70,6 +73,13 @@ public class Product {
 	}
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
+	}
+	
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
 	}
 		
 

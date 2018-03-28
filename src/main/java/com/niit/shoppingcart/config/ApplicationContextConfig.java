@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
-@ComponentScan("com.niit.shoppingcart")
+@ComponentScan("com.*")
 @EnableTransactionManagement
 public class ApplicationContextConfig {
 
@@ -52,7 +52,7 @@ public class ApplicationContextConfig {
 		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 		sessionBuilder.addProperties(getHibernateProperties());
 		
-		sessionBuilder.scanPackages("com.niit");
+		sessionBuilder.scanPackages("com.*");
 	
 		return sessionBuilder.buildSessionFactory();
 	}

@@ -3,11 +3,14 @@ package com.niit.shoppingcart.daoimpl;
 import java.sql.Date;
 import java.util.List;
 
+
 import javax.transaction.Transactional;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +22,7 @@ import com.niit.shoppingcart.domain.User;
 @Repository("userDAO")  //will create iinstance of UserDAOImpl and the name will userDAO
 public class UserDAOImpl implements UserDAO{
 	
-	
+	private static final Logger log=LoggerFactory.getLogger(UserDAOImpl.class);
 	//first inject hibernate session
 	//@Autowire
 	
@@ -28,12 +31,14 @@ public class UserDAOImpl implements UserDAO{
 	@Autowired
 	private User user;
 	public boolean save(User user) {
+		log.debug("starting of the save method");
 		// store in the database.
 		try {
 			user.setRole('C');
 
 			user.setRegisteredDate(new Date(System.currentTimeMillis()) + "");
 			sessionFactory.getCurrentSession().save(user);
+			log.debug("ending of the save method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -45,13 +50,17 @@ public class UserDAOImpl implements UserDAO{
 
 	public boolean update(User user) {
 		
-			
+		log.debug("starting of the update method");
+
 		try {
 			sessionFactory.getCurrentSession().update(user);
+			log.debug("ending of the update method");
+
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error("error occured in update method"+e.getMessage());
 			return false;
 		} 
 		// TODO Auto-generated method stub
@@ -59,6 +68,8 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	public User get(String emailID) {
+		log.debug("starting of the list method");
+
 		//it will set the record based on emailid and stor in user class
 		return sessionFactory.getCurrentSession().get(User.class, emailID);
 	
@@ -89,6 +100,8 @@ public class UserDAOImpl implements UserDAO{
 
 	public User validate(String emailID, String password) {
 		//select * from user whre emailid='miss1@gmail.com' and passwors='mis123'
+		log.debug("Starting of the validate methid");
+		log.info("user"+emailID+"trying to login");
 	user=(User) sessionFactory.getCurrentSession().createCriteria(User.class)
 	.add(Restrictions.eq("emailID", emailID))
 	.add(Restrictions.eq("password", password)).uniqueResult();
