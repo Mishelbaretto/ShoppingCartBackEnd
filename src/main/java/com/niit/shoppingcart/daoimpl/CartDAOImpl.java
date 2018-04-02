@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -13,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-import com.niit.shoppingcart.dao.CategoryDAO;
-import com.niit.shoppingcart.domain.Category;
+import com.niit.shoppingcart.dao.CartDAO;
+import com.niit.shoppingcart.domain.Cart;
 
 @Transactional
-@Repository("categoryDAO")  //will create iinstance of CategoryDAOImpl and the name will categoryDAO
-public class CategoryDAOImpl implements CategoryDAO{
+@Repository("cartDAO")  //will create iinstance of CartDAOImpl and the name will cartDAO
+public class CartDAOImpl implements CartDAO{
 	
 	
 	//first inject hibernate session
@@ -27,12 +26,12 @@ public class CategoryDAOImpl implements CategoryDAO{
 	@Autowired   //seseion factory will automatically inject in the class
 	private SessionFactory sessionFactory;
 	@Autowired
-	private Category category;
-	public boolean save(Category category) {
+	private Cart cart;
+	public boolean save(Cart cart) {
 		// store in the database.
 		try {
 			
-			sessionFactory.getCurrentSession().saveOrUpdate(category);
+			sessionFactory.getCurrentSession().saveOrUpdate(cart);
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -42,11 +41,11 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 	}
 
-	public boolean update(Category category) {
+	public boolean update(Cart cart) {
 		
 			
 		try {
-			sessionFactory.getCurrentSession().update(category);
+			sessionFactory.getCurrentSession().update(cart);
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -57,20 +56,20 @@ public class CategoryDAOImpl implements CategoryDAO{
 		
 	}
 
-	public Category get(String emailID) {
-		//it will set the record based on emailid and stor in category class
-		return sessionFactory.getCurrentSession().get(Category.class, emailID);
+	public Cart get(String emailID) {
+		//it will set the record based on emailid and stor in cart class
+		return sessionFactory.getCurrentSession().get(Cart.class, emailID);
 	
 		
 	}
 
 	public boolean delete(String emailID) {
 		try {
-			category=get(emailID);
-			if(category==null) {
+			cart=get(emailID);
+			if(cart==null) {
 				return false;		
 				}
-			sessionFactory.getCurrentSession().delete(category);
+			sessionFactory.getCurrentSession().delete(cart);
 
 			return true;
 		} catch (HibernateException e) {
@@ -81,12 +80,9 @@ public class CategoryDAOImpl implements CategoryDAO{
 		
 	}
 
-	public List<Category> list() {
-	//return	sessionFactory.getCurrentSession().createQuery("from Category").list();
-		return (List<Category>)
-				sessionFactory.getCurrentSession()
-				.createCriteria(Category.class)
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+	public List<Cart> list(String emailID) {
+	return	sessionFactory.getCurrentSession().createCriteria(Cart.class).add(Restrictions.eq("emailID", emailID)).list();
+		
 	}
 
 	
