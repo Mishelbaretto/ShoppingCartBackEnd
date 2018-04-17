@@ -9,6 +9,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,11 +30,14 @@ public class CategoryDAOImpl implements CategoryDAO{
 	private SessionFactory sessionFactory;
 	@Autowired
 	private Category category;
+	Logger log= LoggerFactory.getLogger(CategoryDAOImpl.class);
 	public boolean save(Category category) {
+		log.debug("Starting of the save method");
 		// store in the database.
 		try {
 			
 			sessionFactory.getCurrentSession().saveOrUpdate(category);
+			log.debug("Ending of the save method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -44,9 +49,10 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 	public boolean update(Category category) {
 		
-			
+		log.debug("Starting of the update method");
 		try {
 			sessionFactory.getCurrentSession().update(category);
+			log.debug("Ending of the update method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -58,6 +64,7 @@ public class CategoryDAOImpl implements CategoryDAO{
 	}
 
 	public Category get(String emailID) {
+		log.debug("get method");
 		//it will set the record based on emailid and stor in category class
 		return sessionFactory.getCurrentSession().get(Category.class, emailID);
 	
@@ -65,13 +72,14 @@ public class CategoryDAOImpl implements CategoryDAO{
 	}
 
 	public boolean delete(String emailID) {
+		log.debug("Starting of the delete method");
 		try {
 			category=get(emailID);
 			if(category==null) {
 				return false;		
 				}
 			sessionFactory.getCurrentSession().delete(category);
-
+			log.debug("Ending of the delete method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -83,6 +91,7 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 	public List<Category> list() {
 	//return	sessionFactory.getCurrentSession().createQuery("from Category").list();
+		log.debug("List method");
 		return (List<Category>)
 				sessionFactory.getCurrentSession()
 				.createCriteria(Category.class)

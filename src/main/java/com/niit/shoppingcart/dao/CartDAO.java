@@ -16,13 +16,16 @@ public interface CartDAO {
 	public boolean update(Cart cart);
 	
 	
+	//relate to order
+	public boolean update(String emailID);
+	
 	//get the cart details
 	
-	public  Cart   get(String id);
+	public  Cart   get(int id);
 	
 	//delete the cart
 	
-	public  boolean delete(String id);
+	public  boolean delete(int id);
 	
 	//to get all the cart added by a particular user
 	public  List<Cart>   list(String emailID);

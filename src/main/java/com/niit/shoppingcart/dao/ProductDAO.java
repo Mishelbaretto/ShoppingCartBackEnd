@@ -28,6 +28,10 @@ public interface ProductDAO {
 	public  List<Product>   list();
 	
 	//validate the credentials crrec or not
+	public  List<Product>   search(String searchString);
+	
+	public  List<Product>   search(String searchString, int maxPrice);
+	public  List<Product>   search(String searchString, int minPrice,int maxPrice);
 	
 	
 

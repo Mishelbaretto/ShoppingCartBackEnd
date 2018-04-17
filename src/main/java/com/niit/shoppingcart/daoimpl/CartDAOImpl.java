@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,11 +29,15 @@ public class CartDAOImpl implements CartDAO{
 	private SessionFactory sessionFactory;
 	@Autowired
 	private Cart cart;
+	
+	Logger log = LoggerFactory.getLogger(CartDAOImpl.class);
 	public boolean save(Cart cart) {
+		log.debug("Starting of the save method");
 		// store in the database.
 		try {
 			
-			sessionFactory.getCurrentSession().saveOrUpdate(cart);
+			sessionFactory.getCurrentSession().save(cart);
+			log.debug("Ending of the save method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -42,10 +48,12 @@ public class CartDAOImpl implements CartDAO{
 	}
 
 	public boolean update(Cart cart) {
-		
+		log.debug("Starting of the update method");
 			
 		try {
+			
 			sessionFactory.getCurrentSession().update(cart);
+			log.debug("Ending of the update method");
 			return true;
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
@@ -55,35 +63,61 @@ public class CartDAOImpl implements CartDAO{
 		// TODO Auto-generated method stub
 		
 	}
-
-	public Cart get(String emailID) {
-		//it will set the record based on emailid and stor in cart class
-		return sessionFactory.getCurrentSession().get(Cart.class, emailID);
 	
-		
-	}
+	
+	
+	
 
-	public boolean delete(String emailID) {
-		try {
-			cart=get(emailID);
-			if(cart==null) {
-				return false;		
-				}
-			sessionFactory.getCurrentSession().delete(cart);
+	
 
-			return true;
-		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		} 
-		
-	}
-
+	
 	public List<Cart> list(String emailID) {
+		log.debug("Starting of the list method");
 	return	sessionFactory.getCurrentSession().createCriteria(Cart.class).add(Restrictions.eq("emailID", emailID)).list();
 		
 	}
+
+	
+	
+	public boolean update(String emailID) {
+		log.debug("Starting of the method update");
+		log.debug("Goiig to place order of "  + emailID);
+		String hql="update Cart set status='O' where emailid='"+emailID+"'";
+		try {
+			sessionFactory.getCurrentSession().createQuery(hql).executeUpdate();
+			log.debug("Ending of the method update");
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
+
+	public Cart get(int id) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().get(Cart.class, id);
+		
+	}
+
+	public boolean delete(int id) {
+		// TODO Auto-generated method stub
+		log.debug("Starting of the delete method");
+		try{
+			cart= get(id);
+			if (cart== null){
+				return false;}
+			else
+			{sessionFactory.getCurrentSession().delete(cart);
+			log.debug("Ending of the delete method");
+			return true;}
+		} 
+		catch(HibernateException e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 
 	
 
