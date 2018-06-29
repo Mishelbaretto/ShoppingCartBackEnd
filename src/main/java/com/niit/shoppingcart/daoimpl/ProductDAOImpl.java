@@ -95,7 +95,8 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	public List<Product> search(String searchString) {
-		String hql ="from Product where description like '%"+searchString+"%'";
+		String hql ="from Product where description like '%"+searchString+"%' or name like '%\" + searchString + \"%'";
+		
 	return	sessionFactory.getCurrentSession().createQuery(hql).list();
 		
 	}

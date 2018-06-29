@@ -1,5 +1,6 @@
 package com.niit.shoppingcart.domain;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.persistence.Entity;
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @Table
-public class Cart {
+public class Cart implements Serializable  {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String emailID;
 	private String productName;

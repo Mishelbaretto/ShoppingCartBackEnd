@@ -30,6 +30,7 @@ public interface CartDAO {
 	//to get all the cart added by a particular user
 	public  List<Cart>   list(String emailID);
 	
+	public boolean deleteCart(String emailID); 
 	
 	
 	

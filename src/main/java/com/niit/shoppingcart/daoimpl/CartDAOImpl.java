@@ -35,7 +35,7 @@ public class CartDAOImpl implements CartDAO{
 		log.debug("Starting of the save method");
 		// store in the database.
 		try {
-			
+			cart.setId();
 			sessionFactory.getCurrentSession().save(cart);
 			log.debug("Ending of the save method");
 			return true;
@@ -117,6 +117,36 @@ public class CartDAOImpl implements CartDAO{
 		}
 		
 	}
+
+	public boolean deleteCart(String emailID) {
+		// TODO Auto-generated method stub
+		String hql = "delete from Cart where emailID='" + emailID + "'";
+		try {
+			sessionFactory.getCurrentSession().createQuery(hql).executeUpdate();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+/*
+ * 
+ * 
+ * 
+ * 
+ * public boolean deleteCart(String emailID) {
+
+		String hql = "delete from Cart where emailID='" + emailID + "'";
+		try {
+			sessionFactory.getCurrentSession().createQuery(hql).executeUpdate();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+ */
+
 	
 
 	
